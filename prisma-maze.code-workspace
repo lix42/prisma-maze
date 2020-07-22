@@ -4,5 +4,7 @@
       "path": "."
     }
   ],
-  "settings": {}
+  "settings": {
+    "browser-preview.startUrl": "http://localhost:3000"
+  }
 }

@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Cell from "./Cell";
+import useCells from "./useCells";
 
 function App() {
+  const cells = useCells(5, 12);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="canvas">
+      {cells.flatMap((columns, rowIndex) =>
+        columns.map((color, columnIndex) => (
+          <Cell
+            key={`${rowIndex}-${columnIndex}`}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            color={color}
+          />
+        ))
+      )}
     </div>
   );
 }
