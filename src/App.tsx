@@ -1,24 +1,10 @@
 import React from "react";
-import "./App.css";
-import Cell from "./Cell";
-import useCells from "./useCells";
+import useCells from "./hooks/useCells";
+import { Container } from "./components/Container/component";
 
 function App() {
-  const cells = useCells(5, 12);
-  return (
-    <div className="canvas">
-      {cells.flatMap((columns, rowIndex) =>
-        columns.map((color, columnIndex) => (
-          <Cell
-            key={`${rowIndex}-${columnIndex}`}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            color={color}
-          />
-        ))
-      )}
-    </div>
-  );
+  const grid = useCells(5, 12);
+  return <Container grid={grid} />;
 }
 
 export default App;

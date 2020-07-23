@@ -1,35 +1,37 @@
-.cell {
+import { css } from "emotion";
+
+export const cell = css`
   box-sizing: content-box;
   position: absolute;
   width: 0;
   height: 0;
   border: calc(var(--cell-width) / 2) solid transparent;
-}
+`;
 
-.pink {
+export const pink = css`
   --cell-color: pink;
-}
+`;
 
-.skyblue {
+export const skyblue = css`
   --cell-color: skyblue;
-}
+`;
 
-.right {
+export const right = css`
   border-left-width: 0;
   border-right-color: var(--cell-color);
-}
+`;
 
-.bottom {
+export const bottom = css`
   border-top-width: 0;
   border-bottom-color: var(--cell-color);
-}
+`;
 
-.left {
+export const left = css`
   border-right-width: 0;
   border-left-color: var(--cell-color);
-}
+`;
 
-.top {
+export const top = css`
   border-bottom-width: 0;
   border-top-color: var(--cell-color);
-}
+`;

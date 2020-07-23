@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { CellColor, CellColorOption } from "../components/Cell/component";
 
-const COLORS = ["pink", "skyblue"];
+const COLORS = Object.keys(CellColor) as CellColorOption[];
 
-const createGrid = (rowCount: number, columnCount: number): string[][] => {
+const createGrid = (
+  rowCount: number,
+  columnCount: number
+): CellColorOption[][] => {
   const rows = new Array(rowCount);
   for (let i = 0; i < rowCount; i++) {
     const columns = new Array(columnCount)
@@ -13,7 +17,7 @@ const createGrid = (rowCount: number, columnCount: number): string[][] => {
   return rows;
 };
 
-const useCells = (rows: number, columns: number): string[][] => {
+const useCells = (rows: number, columns: number): CellColorOption[][] => {
   const [cells] = useState(createGrid(rows, columns));
   return cells;
 };
