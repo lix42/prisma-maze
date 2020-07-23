@@ -8,14 +8,6 @@ export const cell = css`
   border: calc(var(--cell-width) / 2) solid transparent;
 `;
 
-export const pink = css`
-  --cell-color: pink;
-`;
-
-export const skyblue = css`
-  --cell-color: skyblue;
-`;
-
 export const right = css`
   border-left-width: 0;
   border-right-color: var(--cell-color);

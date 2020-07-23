@@ -1,7 +1,8 @@
 import React from "react";
 import { cx } from "emotion";
-import { Cell, CellColorOption } from "../Cell/component";
+import { Cell } from "../Cell/component";
 import { canvas } from "./style";
+import { CellColorOption } from "../../hooks/useColor";
 
 export const Container: React.FC<{ grid: CellColorOption[][] }> = ({
   grid,
