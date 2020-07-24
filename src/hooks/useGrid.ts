@@ -1,4 +1,4 @@
-import { CellColorOption } from "./useColor";
+import { CellColorOption } from "../logic/cellColors";
 
 const COLORS = Object.values(CellColorOption).filter(
   (color) => color !== CellColorOption.Transparent

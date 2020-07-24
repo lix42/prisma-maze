@@ -17,7 +17,7 @@ export enum CellColorOption {
   Pink = "pink",
   Skyblue = "skyblue",
 }
-export const CellColor = Object.freeze({
+export const CellColors = Object.freeze({
   [CellColorOption.Transparent]: transparent,
   [CellColorOption.Pink]: pink,
   [CellColorOption.Skyblue]: skyblue,

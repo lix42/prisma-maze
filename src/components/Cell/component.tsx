@@ -1,7 +1,7 @@
 import React from "react";
 import { cx } from "emotion";
 import { cell, top as topStyle, bottom as bottomStyle } from "./style";
-import { CellColorOption, CellColor } from "../../hooks/useColor";
+import { CellColorOption, CellColors } from "../../logic/cellColors";
 
 interface CellProps {
   readonly rowIndex: number;
@@ -15,7 +15,7 @@ export const Cell: React.FC<CellProps> = ({ rowIndex, columnIndex, color }) => {
   const left = columnIndex * 51;
   return (
     <div
-      className={cx(cell, CellColor[color], direction)}
+      className={cx(cell, CellColors[color], direction)}
       style={{ top, left }}
     ></div>
   );
