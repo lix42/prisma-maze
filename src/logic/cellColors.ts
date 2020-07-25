@@ -13,12 +13,15 @@ const transparent = css`
 `;
 
 export enum CellColorOption {
-  Transparent = "transparent",
   Pink = "pink",
   Skyblue = "skyblue",
 }
+
+export type TransparentColorType = "transparent";
+export const transparentColor: TransparentColorType = "transparent";
+export type AllCellColors = CellColorOption | TransparentColorType;
 export const CellColors = Object.freeze({
-  [CellColorOption.Transparent]: transparent,
+  [transparentColor]: transparent,
   [CellColorOption.Pink]: pink,
   [CellColorOption.Skyblue]: skyblue,
 });

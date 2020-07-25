@@ -13,3 +13,10 @@ const OppositeDirectionMap = {
 };
 export const oppositeDirection = (direction: Directions): Directions =>
   OppositeDirectionMap[direction];
+
+export enum UiDirections {
+  right,
+  up,
+  rightAndDown,
+  rightAndUp,
+}

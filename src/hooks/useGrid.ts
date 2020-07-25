@@ -1,8 +1,6 @@
-import { CellColorOption } from "../logic/cellColors";
+import { CellColorOption, transparentColor } from "../logic/cellColors";
 
-const COLORS = Object.values(CellColorOption).filter(
-  (color) => color !== CellColorOption.Transparent
-) as CellColorOption[];
+const COLORS = Object.values(CellColorOption) as CellColorOption[];
 
 const createGrid = (
   rowCount: number,
@@ -29,7 +27,7 @@ const fillInSpace = (
   for (let row = 0; row < rowCount; row++) {
     for (let column = 0; column < columnCount; column++) {
       if (row % 2 === 0 && column % 3 === 0) {
-        newGrid[row][column] = CellColorOption.Transparent;
+        newGrid[row][column] = transparentColor;
       } else {
         newGrid[row][column] = grid[row][column];
       }
