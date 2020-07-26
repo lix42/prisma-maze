@@ -154,6 +154,7 @@ export const dataGridReducer: Reducer<DataGrid, DataGridHandledActions> = (
   state,
   action
 ) => {
+  console.log(JSON.stringify(action, null, 4));
   switch (action.type) {
     case DataGridActionType.connect:
       return handleConnect(state, action);
