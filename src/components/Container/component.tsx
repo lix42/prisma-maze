@@ -2,15 +2,13 @@ import React from "react";
 import { cx } from "emotion";
 import { Cell } from "../Cell/component";
 import { canvas } from "./style";
-import { CellColorOption } from "../../logic/cellColors";
+import { UiCell } from "../../logic/mapDataToUi";
 
-export const Container: React.FC<{ grid: CellColorOption[][] }> = ({
-  grid,
-}) => {
+export const Container: React.FC<{ grid: UiCell[][] }> = ({ grid }) => {
   return (
     <div className={cx(canvas)}>
       {grid.flatMap((columns, rowIndex) =>
-        columns.map((color, columnIndex) => (
+        columns.map(({ color }, columnIndex) => (
           <Cell
             key={`${rowIndex}-${columnIndex}`}
             rowIndex={rowIndex}

@@ -1,12 +1,12 @@
 import React from "react";
 import { cx } from "emotion";
 import { cell, top as topStyle, bottom as bottomStyle } from "./style";
-import { CellColorOption, CellColors } from "../../logic/cellColors";
+import { CellColors, AllCellColors } from "../../logic/cellColors";
 
 interface CellProps {
   readonly rowIndex: number;
   readonly columnIndex: number;
-  readonly color: CellColorOption;
+  readonly color: AllCellColors;
 }
 
 export const Cell: React.FC<CellProps> = ({ rowIndex, columnIndex, color }) => {

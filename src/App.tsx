@@ -3,8 +3,8 @@ import useGrid from "./hooks/useGrid";
 import { Container } from "./components/Container/component";
 
 function App() {
-  const grid = useGrid(5, 12);
-  return <Container grid={grid} />;
+  const { uiGrid } = useGrid(3, 4);
+  return <Container grid={uiGrid} />;
 }
 
 export default App;
