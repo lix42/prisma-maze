@@ -101,6 +101,39 @@ export const getDataCell = (
       return getDataCell(grid, rowIndex, columnIndex + 1);
   }
 };
+
+export const disconnectCell = (
+  grid: DataGrid,
+  rowIndex: number,
+  columnIndex: number,
+  direction: Directions
+): DataGrid => {
+  const c1 = getDataCell(grid, rowIndex, columnIndex);
+  const c2 = getDataCell(grid, rowIndex, columnIndex, direction);
+  if (c1 == null || c2 == null) {
+    return grid;
+  }
+
+  const opposite = oppositeDirection(direction);
+  const c1Id = getIdFromCell(c1);
+  const c2Id = getIdFromCell(c2);
+  if (!strHasLength(c1Id) || !strHasLength(c2Id)) {
+    return grid;
+  }
+  const update: { [id: string]: DataCell } = {};
+
+  update[c1Id] = setCellLink(c1, direction, undefined);
+  update[c2Id] = setCellLink(c2, opposite, undefined);
+  return {
+    width: grid.width,
+    height: grid.height,
+    data: {
+      ...grid.data,
+      ...update,
+    },
+  };
+};
+
 export const connectCell = (
   grid: DataGrid,
   rowIndex: number,
