@@ -25,3 +25,11 @@ export const CellColors = Object.freeze({
   [CellColorOption.Pink]: pink,
   [CellColorOption.Skyblue]: skyblue,
 });
+
+const allCellColors = Object.values(CellColorOption) as CellColorOption[];
+const cellColorsCount = allCellColors.length;
+
+export const getRandomColor = (): CellColorOption => {
+  const i = Math.floor(Math.random() * cellColorsCount);
+  return allCellColors[i];
+};

@@ -3,6 +3,7 @@ import {
   TransparentColorType,
   AllCellColors,
   transparentColor,
+  getRandomColor,
 } from "./cellColors";
 import { Directions, UiDirections } from "../utils/directions";
 import {
@@ -98,6 +99,17 @@ export const mapDataToUI = (grid: DataGrid): UiCell[][] => {
       }
     }
   }
+  result.forEach((row) =>
+    row.forEach((cell) => {
+      if (cell.type !== UiCellType.Space) {
+        if (isCellFilled(cell, grid)) {
+          cell.color = getRandomColor();
+        } else {
+          cell.color = transparentColor;
+        }
+      }
+    })
+  );
   return result;
 };
 
