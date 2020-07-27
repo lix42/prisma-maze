@@ -15,7 +15,7 @@ import {
   isCellLinked,
 } from "./grid";
 import { strHasLength } from "../utils/typeGuard";
-enum UiCellType {
+export enum UiCellType {
   Space,
   Link,
   Fixed,
