@@ -1,7 +1,7 @@
 import {
   createDataGrid,
   getIdFromIndex,
-  getDataCell,
+  getCellByIndex,
   isCellLinked,
 } from "../logic/grid";
 import {
@@ -23,7 +23,7 @@ describe("datagrid reducer", () => {
         grid,
         createDataGridConnectAction(cellId, Directions.right)
       );
-      const newCell = getDataCell(newGrid, 0, 0);
+      const newCell = getCellByIndex(newGrid, 0, 0);
       if (newCell == null) {
         expect(newCell).toBeTruthy();
       } else {
@@ -38,7 +38,7 @@ describe("datagrid reducer", () => {
         grid,
         createDataGridConnectAction(cellId, Directions.right)
       );
-      const connectedCell = getDataCell(connectedGrid, 0, 0);
+      const connectedCell = getCellByIndex(connectedGrid, 0, 0);
       if (connectedCell == null) {
         expect(connectedCell).toBeTruthy();
       } else {
@@ -48,7 +48,7 @@ describe("datagrid reducer", () => {
         connectedGrid,
         createDataGridDisconnectAction(cellId, Directions.right)
       );
-      const disconnectedCell = getDataCell(disconnectedGrid, 0, 0);
+      const disconnectedCell = getCellByIndex(disconnectedGrid, 0, 0);
       if (disconnectedCell == null) {
         expect(disconnectedCell).toBeTruthy();
       } else {
@@ -63,7 +63,7 @@ describe("datagrid reducer", () => {
         grid,
         createDataGridToggleConnectAction(cellId, Directions.right)
       );
-      const connectedCell = getDataCell(connectedGrid, 0, 0);
+      const connectedCell = getCellByIndex(connectedGrid, 0, 0);
       if (connectedCell == null) {
         expect(connectedCell).toBeTruthy();
       } else {
@@ -73,7 +73,7 @@ describe("datagrid reducer", () => {
         connectedGrid,
         createDataGridToggleConnectAction(cellId, Directions.right)
       );
-      const disconnectedCell = getDataCell(disconnectedGrid, 0, 0);
+      const disconnectedCell = getCellByIndex(disconnectedGrid, 0, 0);
       if (disconnectedCell == null) {
         expect(disconnectedCell).toBeTruthy();
       } else {
@@ -96,7 +96,7 @@ describe("datagrid reducer", () => {
         connectedGrid2,
         createDataGridClearAction(cellId)
       );
-      const disconnectedCell = getDataCell(disconnectedGrid, 0, 0);
+      const disconnectedCell = getCellByIndex(disconnectedGrid, 0, 0);
       if (disconnectedCell == null) {
         expect(disconnectedCell).toBeTruthy();
       } else {
@@ -120,7 +120,7 @@ describe("datagrid reducer", () => {
         connectedGrid2,
         createDataGridResetAction()
       );
-      const disconnectedCell = getDataCell(disconnectedGrid, 0, 0);
+      const disconnectedCell = getCellByIndex(disconnectedGrid, 0, 0);
       if (disconnectedCell == null) {
         expect(disconnectedCell).toBeTruthy();
       } else {

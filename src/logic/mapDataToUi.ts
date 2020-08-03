@@ -10,7 +10,7 @@ import {
   DataGrid,
   DataCell,
   getIdFromCell,
-  getDataCell,
+  getCellByIndex,
   getCellById,
   isCellLinked,
 } from "./grid";
@@ -93,7 +93,7 @@ export const mapDataToUI = (grid: DataGrid): UiCell[][] => {
       result[rowIndex * 2 + 1] = [];
     }
     for (let columnIndex = 0; columnIndex < columnCount; columnIndex++) {
-      const dataCell = getDataCell(grid, rowIndex, columnIndex);
+      const dataCell = getCellByIndex(grid, rowIndex, columnIndex);
       if (dataCell != null) {
         insertDataCellToUiGrid(result, dataCell);
       }

@@ -5,7 +5,9 @@ export enum Directions {
   left,
 }
 
-const OppositeDirectionMap = {
+const OppositeDirectionMap: {
+  readonly [key in Directions]: Directions;
+} = {
   [Directions.up]: Directions.down,
   [Directions.right]: Directions.left,
   [Directions.down]: Directions.up,

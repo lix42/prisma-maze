@@ -1,5 +1,7 @@
 import { Directions, oppositeDirection } from "../utils/directions";
 import { strHasLength } from "../utils/typeGuard";
+import { Dir } from "fs";
+import { Direction } from "readline";
 
 type CellId = string;
 export type DataCell = {
@@ -70,7 +72,7 @@ export const createDataGrid = (
 
 export const getCellById = (grid: DataGrid, id?: string): DataCell | null =>
   strHasLength(id) ? grid?.data?.[id] ?? null : null;
-export const getDataCell = (
+export const getCellByIndex = (
   grid: DataGrid,
   rowIndex: number,
   columnIndex: number,
@@ -92,14 +94,31 @@ export const getDataCell = (
   }
   switch (direction) {
     case Directions.up:
-      return getDataCell(grid, rowIndex - 1, columnIndex);
+      return getCellByIndex(grid, rowIndex - 1, columnIndex);
     case Directions.down:
-      return getDataCell(grid, rowIndex + 1, columnIndex);
+      return getCellByIndex(grid, rowIndex + 1, columnIndex);
     case Directions.left:
-      return getDataCell(grid, rowIndex, columnIndex - 1);
+      return getCellByIndex(grid, rowIndex, columnIndex - 1);
     case Directions.right:
-      return getDataCell(grid, rowIndex, columnIndex + 1);
+      return getCellByIndex(grid, rowIndex, columnIndex + 1);
   }
+};
+
+export const getCellLinkedNeighbors = (
+  grid: DataGrid,
+  cellId: string
+): string[] => {
+  const current = getCellById(grid, cellId);
+  if (current == null) {
+    return [];
+  }
+  return Object.values(Directions).reduce((accu, dir) => {
+    const target = current.links[dir as Directions];
+    if (strHasLength(target)) {
+      accu.push(target);
+    }
+    return accu;
+  }, [] as string[]);
 };
 
 export const disconnectCell = (
@@ -108,8 +127,8 @@ export const disconnectCell = (
   columnIndex: number,
   direction: Directions
 ): DataGrid => {
-  const c1 = getDataCell(grid, rowIndex, columnIndex);
-  const c2 = getDataCell(grid, rowIndex, columnIndex, direction);
+  const c1 = getCellByIndex(grid, rowIndex, columnIndex);
+  const c2 = getCellByIndex(grid, rowIndex, columnIndex, direction);
   if (c1 == null || c2 == null) {
     return grid;
   }
@@ -140,8 +159,8 @@ export const connectCell = (
   columnIndex: number,
   direction: Directions
 ): DataGrid => {
-  const c1 = getDataCell(grid, rowIndex, columnIndex);
-  const c2 = getDataCell(grid, rowIndex, columnIndex, direction);
+  const c1 = getCellByIndex(grid, rowIndex, columnIndex);
+  const c2 = getCellByIndex(grid, rowIndex, columnIndex, direction);
   if (c1 == null || c2 == null) {
     return grid;
   }
