@@ -1,7 +1,5 @@
 import { Directions, oppositeDirection } from "../utils/directions";
 import { strHasLength } from "../utils/typeGuard";
-import { Dir } from "fs";
-import { Direction } from "readline";
 
 type CellId = string;
 export type DataCell = {
