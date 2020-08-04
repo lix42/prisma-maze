@@ -1,4 +1,4 @@
-import { Directions, oppositeDirection } from "../utils/directions";
+import { Directions, getOppositeDirection } from "../utils/directions";
 import { strHasLength } from "../utils/typeGuard";
 
 type CellId = string;
@@ -131,7 +131,7 @@ export const disconnectCell = (
     return grid;
   }
 
-  const opposite = oppositeDirection(direction);
+  const opposite = getOppositeDirection(direction);
   const c1Id = getIdFromCell(c1);
   const c2Id = getIdFromCell(c2);
   if (!strHasLength(c1Id) || !strHasLength(c2Id)) {
@@ -163,7 +163,7 @@ export const connectCell = (
     return grid;
   }
 
-  const opposite = oppositeDirection(direction);
+  const opposite = getOppositeDirection(direction);
   const c1Id = getIdFromCell(c1);
   const c2Id = getIdFromCell(c2);
   if (!strHasLength(c1Id) || !strHasLength(c2Id)) {
