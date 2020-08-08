@@ -6,7 +6,6 @@ import { CellColors, AllCellColors } from "../../logic/cellColors";
 interface CellProps {
   readonly rowIndex: number;
   readonly columnIndex: number;
-  readonly isCurrentRow: boolean;
   readonly color: AllCellColors;
   readonly onClick?: (rowIndex: number, columnIndex: number) => void;
 }
@@ -14,12 +13,12 @@ interface CellProps {
 export const Cell: React.FC<CellProps> = ({
   rowIndex,
   columnIndex,
-  isCurrentRow,
   color,
   onClick,
 }) => {
   const direction = (rowIndex + columnIndex) % 2 === 0 ? topStyle : bottomStyle;
-  const left = columnIndex * (isCurrentRow ? 101 : 51);
+  const top = rowIndex * 51;
+  const left = columnIndex * 51;
   const clickHandler = useCallback(() => {
     if (typeof onClick === "function") {
       onClick(rowIndex, columnIndex);
@@ -28,7 +27,7 @@ export const Cell: React.FC<CellProps> = ({
   return (
     <div
       className={cx(cell, CellColors[color], direction)}
-      style={{ left }}
+      style={{ top, left }}
       onClick={clickHandler}
     ></div>
   );
