@@ -56,7 +56,7 @@ const insertDataCellToUiGrid = (uiGrid: UiCell[][], cell: DataCell) => {
         columnIndex % 2 === 0
           ? UiDirections.rightAndDown
           : UiDirections.rightAndUp,
-      color: CellColorOption.Pink,
+      color: CellColorOption.Red,
     };
     uiGrid[uiRowIndex][uiColumnIndex + 2] = {
       type: UiCellType.Link,
@@ -69,7 +69,7 @@ const insertDataCellToUiGrid = (uiGrid: UiCell[][], cell: DataCell) => {
         type: UiCellType.Link,
         dataCellId: cellId,
         direction: UiDirections.up,
-        color: CellColorOption.Pink,
+        color: CellColorOption.Red,
       };
       uiGrid[uiRowIndex - 1][uiColumnIndex + 1] = {
         type: UiCellType.Link,
