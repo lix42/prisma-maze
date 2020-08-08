@@ -6,8 +6,10 @@ import {
   disconnectCell,
   isCellLinked,
   createDataGrid,
+  getIdFromIndex,
 } from "../logic/grid";
 import { Directions } from "../utils/directions";
+import { generateMaze } from "../logic/generate";
 
 enum DataGridActionType {
   connect = "@@datagrid/connect",
@@ -15,6 +17,7 @@ enum DataGridActionType {
   toggleConnection = "@@datagrid/toggle-connection",
   clear = "@@datagrid/clear",
   reset = "@@datagrid/reset",
+  constructMaze = "@@datagrid/construct-maze",
 }
 
 interface DataGridConnectAction {
@@ -81,12 +84,34 @@ export const createDataGridResetAction = (): DataGridResetAction => ({
   type: DataGridActionType.reset,
 });
 
+interface DataGridConstructMazeAction {
+  readonly type: DataGridActionType.constructMaze;
+  readonly startRowIndex: number;
+  readonly startColumnIndex: number;
+  readonly endRowIndex: number;
+  readonly endColumnIndex: number;
+}
+
+export const createDataGridConstructMazeAction = (
+  startRowIndex: number,
+  startColumnIndex: number,
+  endRowIndex: number,
+  endColumnIndex: number
+): DataGridConstructMazeAction => ({
+  type: DataGridActionType.constructMaze,
+  startRowIndex,
+  startColumnIndex,
+  endRowIndex,
+  endColumnIndex,
+});
+
 export type DataGridHandledActions =
   | DataGridConnectAction
   | DataGridDisconnectAction
   | DataGridToggleConnectAction
   | DataGridClearAction
-  | DataGridResetAction;
+  | DataGridResetAction
+  | DataGridConstructMazeAction;
 
 const handleConnect = (grid: DataGrid, action: DataGridConnectAction) => {
   const { cellId, direction } = action;
@@ -150,6 +175,23 @@ const resetGrid = (grid: DataGrid, action: DataGridResetAction) => {
   return createDataGrid(rowCount, columCont);
 };
 
+const constructMaze = (
+  grid: DataGrid,
+  action: DataGridConstructMazeAction
+): DataGrid => {
+  const emptyGrid = resetGrid(grid, createDataGridResetAction());
+  const {
+    startRowIndex,
+    startColumnIndex,
+    endRowIndex,
+    endColumnIndex,
+  } = action;
+  const startId = getIdFromIndex(startRowIndex, startColumnIndex);
+  const endId = getIdFromIndex(endRowIndex, endColumnIndex);
+  const maze = generateMaze(emptyGrid, startId, endId);
+  return maze;
+};
+
 export const dataGridReducer: Reducer<DataGrid, DataGridHandledActions> = (
   state,
   action
@@ -166,5 +208,7 @@ export const dataGridReducer: Reducer<DataGrid, DataGridHandledActions> = (
       return clearCellLink(state, action);
     case DataGridActionType.reset:
       return resetGrid(state, action);
+    case DataGridActionType.constructMaze:
+      return constructMaze(state, action);
   }
 };

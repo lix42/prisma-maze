@@ -7,6 +7,7 @@ import {
   DataGridHandledActions,
   createDataGridClearAction,
   createDataGridToggleConnectAction,
+  createDataGridConstructMazeAction,
 } from "../../reducer/dataGrid";
 import { UiDirections, Directions } from "../../utils/directions";
 
@@ -59,25 +60,32 @@ export const Container: React.FC<ContainerProps> = ({ grid, dispatch }) => {
     currentRow == null ? grid[0].length * 51 + 50 : grid[0].length * 101;
 
   return (
-    <div className={cx(canvas)} style={{ width, height }}>
-      {grid.map((columns, rowIndex) => (
-        <div
-          className={cx(rowContainer)}
-          onMouseEnter={() => enterRow(rowIndex)}
-          onMouseLeave={() => leaveRow(rowIndex)}
-        >
-          {columns.map(({ color }, columnIndex) => (
-            <Cell
-              key={`${rowIndex}-${columnIndex}`}
-              rowIndex={rowIndex}
-              columnIndex={columnIndex}
-              isCurrentRow={rowIndex === currentRow}
-              color={color}
-              onClick={onCellClick}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
+    <>
+      <div className={cx(canvas)} style={{ width, height }}>
+        {grid.map((columns, rowIndex) => (
+          <div
+            className={cx(rowContainer)}
+            onMouseEnter={() => enterRow(rowIndex)}
+            onMouseLeave={() => leaveRow(rowIndex)}
+          >
+            {columns.map(({ color }, columnIndex) => (
+              <Cell
+                key={`${rowIndex}-${columnIndex}`}
+                rowIndex={rowIndex}
+                columnIndex={columnIndex}
+                isCurrentRow={rowIndex === currentRow}
+                color={color}
+                onClick={onCellClick}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={() => dispatch(createDataGridConstructMazeAction(0, 0, 2, 0))}
+      >
+        Create Maze
+      </button>
+    </>
   );
 };
