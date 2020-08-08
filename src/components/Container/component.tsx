@@ -1,7 +1,7 @@
-import React, { Dispatch } from "react";
+import React, { Dispatch, useState, useCallback } from "react";
 import { cx } from "emotion";
 import { Cell } from "../Cell/component";
-import { canvas } from "./style";
+import { canvas, controlBar } from "./style";
 import { UiCell } from "../../logic/mapDataToUi";
 import {
   DataGridHandledActions,
@@ -13,28 +13,60 @@ interface ContainerProps {
   readonly dispatch: Dispatch<DataGridHandledActions>;
 }
 export const Container: React.FC<ContainerProps> = ({ grid, dispatch }) => {
+  const [offsite, setOffsite] = useState(0);
+  const dataGridHeight = Math.ceil(grid.length / 2);
+  const uiGridWidth = grid[0].length;
   const height = grid.length * 51;
   const width = grid[0].length * 51 + 50;
+
+  const refreshMaze = useCallback(
+    () =>
+      dispatch(createDataGridConstructMazeAction(0, 0, dataGridHeight - 1, 0)),
+    [dispatch, dataGridHeight]
+  );
+
+  const scrollLeft = useCallback(() => {
+    let newOffsite = offsite + 2;
+    if (newOffsite >= uiGridWidth) {
+      newOffsite = 0;
+    }
+    setOffsite(newOffsite);
+  }, [offsite, uiGridWidth]);
+
+  const scrollRight = useCallback(() => {
+    let newOffsite = offsite - 2;
+    if (newOffsite < 0) {
+      newOffsite = uiGridWidth + newOffsite;
+    }
+    setOffsite(newOffsite);
+  }, [offsite, uiGridWidth]);
 
   return (
     <>
       <div className={cx(canvas)} style={{ width, height }}>
         {grid.flatMap((columns, rowIndex) =>
-          columns.map(({ color }, columnIndex) => (
-            <Cell
-              key={`${rowIndex}-${columnIndex}`}
-              rowIndex={rowIndex}
-              columnIndex={columnIndex}
-              color={color}
-            />
-          ))
+          columns.map((_, columnIndex) => {
+            let cellIndex = columnIndex + offsite;
+            if (cellIndex >= uiGridWidth) {
+              cellIndex -= uiGridWidth;
+            }
+            const cell = columns[cellIndex];
+            return (
+              <Cell
+                key={`${rowIndex}-${cellIndex}`}
+                rowIndex={rowIndex}
+                columnIndex={columnIndex}
+                color={cell.color}
+              />
+            );
+          })
         )}
       </div>
-      <button
-        onClick={() => dispatch(createDataGridConstructMazeAction(0, 0, 2, 0))}
-      >
-        Create Maze
-      </button>
+      <div className={cx(controlBar)}>
+        <button onClick={refreshMaze}>RefreshMaze Maze</button>
+        <button onClick={scrollLeft}>Scroll Left</button>
+        <button onClick={scrollRight}>Scroll Right</button>
+      </div>
     </>
   );
 };

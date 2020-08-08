@@ -6,3 +6,7 @@ export const canvas = css`
   --cell-width: 100px;
   --cell-color: black;
 `;
+
+export const controlBar = css`
+  display: flex;
+`;
