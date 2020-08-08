@@ -65,6 +65,13 @@ export const Container: React.FC<ContainerProps> = ({ grid, dispatch }) => {
       <div className={cx(controlBar)}>
         <button onClick={refreshMaze}>RefreshMaze Maze</button>
         <button onClick={scrollLeft}>Scroll Left</button>
+        <button
+          onClick={() => {
+            setOffsite(0);
+          }}
+        >
+          Reset Position
+        </button>
         <button onClick={scrollRight}>Scroll Right</button>
       </div>
     </>
