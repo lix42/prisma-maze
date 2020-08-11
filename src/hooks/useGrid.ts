@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import { createDataGrid } from "../logic/grid";
 import { dataGridReducer } from "../reducer/dataGrid";
 import { mapDataToUI } from "../logic/mapDataToUi";
+import { colorMazeWall } from "../logic/colorUiGrid";
 
 const initGrid = ({
   rowCount,
@@ -18,6 +19,7 @@ const useGrid = (rowCount: number, columnCount: number) => {
     initGrid
   );
   const uiGrid = mapDataToUI(dataGrid);
+  colorMazeWall(uiGrid);
   return { uiGrid, dispatch };
 };
 

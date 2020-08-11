@@ -1,8 +1,4 @@
-import {
-  CellColorOption,
-  transparentColor,
-  getRandomColor,
-} from "./cellColors";
+import { CellColorOption, transparentColor } from "./cellColors";
 import { Directions, UiDirections } from "../utils/directions";
 import {
   DataGrid,
@@ -33,30 +29,30 @@ const insertDataCellToUiGrid = (uiGrid: UiGrid, cell: DataCell) => {
         columnIndex % 2 === 0
           ? UiDirections.rightAndDown
           : UiDirections.rightAndUp,
-      color: CellColorOption.Red,
+      color: CellColorOption.Unset,
     };
     uiGrid[uiRowIndex][uiColumnIndex + 2] = {
       type: UiCellType.Link,
       dataCellId: cellId,
       direction: UiDirections.right,
-      color: CellColorOption.Blue,
+      color: CellColorOption.Unset,
     };
     if (uiRowIndex > 0) {
       uiGrid[uiRowIndex - 1][uiColumnIndex] = {
         type: UiCellType.Link,
         dataCellId: cellId,
         direction: UiDirections.up,
-        color: CellColorOption.Red,
+        color: CellColorOption.Unset,
       };
       uiGrid[uiRowIndex - 1][uiColumnIndex + 1] = {
         type: UiCellType.Link,
         dataCellId: cellId,
         direction: UiDirections.up,
-        color: CellColorOption.Blue,
+        color: CellColorOption.Unset,
       };
       uiGrid[uiRowIndex - 1][uiColumnIndex + 2] = {
         type: UiCellType.Fixed,
-        color: CellColorOption.Blue,
+        color: CellColorOption.Unset,
       };
     }
   }
@@ -76,14 +72,14 @@ export const mapDataToUI = (grid: DataGrid): UiGrid => {
       }
     }
   }
-  result.forEach((row) =>
-    row.forEach((cell) => {
-      if (cell.type !== UiCellType.Space) {
-        if (isCellFilled(cell, grid)) {
-          cell.color = getRandomColor();
-        } else {
-          cell.color = transparentColor;
-        }
+  result.forEach((row, rowIndex) =>
+    row.forEach((cell, columnIndex) => {
+      if (cell.type !== UiCellType.Space && !isCellFilled(cell, grid)) {
+        result[rowIndex][columnIndex] = {
+          type: UiCellType.Space,
+          dataCellId: "",
+          color: transparentColor,
+        };
       }
     })
   );

@@ -1,15 +1,16 @@
 import { css } from "emotion";
+import { arrHasLength } from "../utils/typeGuard";
 
 const red = css`
-  --cell-color: rgb(200, 100, 100);
+  --cell-color: rgb(240, 80, 80);
 `;
 
 const green = css`
-  --cell-color: rgb(100, 200, 100);
+  --cell-color: rgb(80, 240, 80);
 `;
 
 const blue = css`
-  --cell-color: rgb(100, 100, 200);
+  --cell-color: rgb(80, 80, 240);
 `;
 
 const yellow = css`
@@ -29,6 +30,7 @@ const transparent = css`
 `;
 
 export enum CellColorOption {
+  Unset = "unset",
   Red = "red",
   Green = "green",
   Blue = "blue",
@@ -42,6 +44,7 @@ export const transparentColor: TransparentColorType = "transparent";
 export type AllCellColors = CellColorOption | TransparentColorType;
 export const CellColors = Object.freeze({
   [transparentColor]: transparent,
+  [CellColorOption.Unset]: transparent,
   [CellColorOption.Red]: red,
   [CellColorOption.Green]: green,
   [CellColorOption.Blue]: blue,
@@ -50,7 +53,9 @@ export const CellColors = Object.freeze({
   [CellColorOption.Cyan]: cyan,
 });
 
-const allCellColors = Object.values(CellColorOption) as CellColorOption[];
+const allCellColors = Object.values(CellColorOption).filter(
+  (c) => c !== CellColorOption.Unset
+) as CellColorOption[];
 const cellColorsCount = allCellColors.length;
 
 export const getRandomColor = (): CellColorOption => {
@@ -73,6 +78,7 @@ export const getRandomPrimaryColor = (): PrimaryColor => {
 };
 
 const DECOMPOSITION_MAP: { [key in CellColorOption]: PrimaryColor[] } = {
+  [CellColorOption.Unset]: [],
   [CellColorOption.Red]: [CellColorOption.Red],
   [CellColorOption.Green]: [CellColorOption.Green],
   [CellColorOption.Blue]: [CellColorOption.Blue],
@@ -81,9 +87,21 @@ const DECOMPOSITION_MAP: { [key in CellColorOption]: PrimaryColor[] } = {
   [CellColorOption.Cyan]: [CellColorOption.Green, CellColorOption.Blue],
 };
 
-export const decompositionColor = (
-  color: CellColorOption
-): Set<PrimaryColor> => {
+export const pickRandomUniqueColor = <S extends AllCellColors>(
+  s: Set<S>
+): S | null => {
+  const list = Array.from(s);
+  if (!arrHasLength(list)) {
+    return null;
+  }
+  const listLength = list.length;
+  return list[Math.random() * listLength] ?? null;
+};
+
+export const decompositionColor = (color: AllCellColors): Set<PrimaryColor> => {
+  if (color === transparentColor) {
+    return new Set([getRandomPrimaryColor()]);
+  }
   return new Set(DECOMPOSITION_MAP[color]);
 };
 

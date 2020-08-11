@@ -1,7 +1,7 @@
 import {
   TransparentColorType,
-  AllCellColors,
   CellColorOption,
+  AllCellColors,
 } from "./cellColors";
 import { UiDirections } from "../utils/directions";
 
@@ -15,13 +15,13 @@ export type UiCell =
   | {
       readonly type: UiCellType.Space;
       readonly dataCellId: string;
-      readonly color: TransparentColorType;
+      color: AllCellColors;
     }
   | {
       readonly type: UiCellType.Link;
       readonly dataCellId: string;
       readonly direction: UiDirections;
-      color: AllCellColors;
+      color: CellColorOption;
     }
   | {
       readonly type: UiCellType.Fixed;
@@ -42,7 +42,7 @@ export type PositionedUiCell = {
   readonly columnIndex: number;
 };
 
-const getCellNeighbors = (
+export const getCellNeighbors = (
   uiGrid: UiGrid,
   rowIndex: number,
   columnIndex: number
@@ -74,7 +74,7 @@ const getCellNeighbors = (
     }
   }
   const anotherRowIndex = columnIndex % 2 === 0 ? rowIndex - 1 : rowIndex + 1;
-  const anotherCell = getUiCell(uiGrid, anotherRowIndex, rightIndex);
+  const anotherCell = getUiCell(uiGrid, anotherRowIndex, columnIndex);
   if (anotherCell != null) {
     result.push({ cell: anotherCell, rowIndex: anotherRowIndex, columnIndex });
   }
@@ -117,4 +117,46 @@ export const traverseUiGrid = (
       queue.push(...next);
     }
   }
+};
+
+export const searchUiGrid = (
+  predictor: (cell: PositionedUiCell) => boolean,
+  uiGrid: UiGrid,
+  rowIndex: number = 0,
+  columnIndex: number = 0,
+  deepFirst = false
+): PositionedUiCell | null => {
+  const startCell = getUiCell(uiGrid, rowIndex, columnIndex);
+  if (startCell == null) {
+    return null;
+  }
+  const queue: PositionedUiCell[] = [];
+  const visited = new Set<string>();
+  queue.push({ cell: startCell, rowIndex, columnIndex });
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (current == null) {
+      continue;
+    }
+    const key = `${current.rowIndex}-${current.columnIndex}`;
+    if (visited.has(key)) {
+      continue;
+    }
+    if (predictor(current) === true) {
+      return current;
+    }
+    visited.add(key);
+    const next = getCellNeighbors(
+      uiGrid,
+      current.rowIndex,
+      current.columnIndex
+    );
+
+    if (deepFirst) {
+      queue.unshift(...next);
+    } else {
+      queue.push(...next);
+    }
+  }
+  return null;
 };
