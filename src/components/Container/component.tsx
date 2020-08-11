@@ -2,14 +2,14 @@ import React, { Dispatch, useState, useCallback } from "react";
 import { cx } from "emotion";
 import { Cell } from "../Cell/component";
 import { canvas, controlBar } from "./style";
-import { UiCell } from "../../logic/mapDataToUi";
 import {
   DataGridHandledActions,
   createDataGridConstructMazeAction,
 } from "../../reducer/dataGrid";
+import { UiGrid } from "../../logic/uiGrid";
 
 interface ContainerProps {
-  readonly grid: UiCell[][];
+  readonly grid: UiGrid;
   readonly dispatch: Dispatch<DataGridHandledActions>;
 }
 export const Container: React.FC<ContainerProps> = ({ grid, dispatch }) => {

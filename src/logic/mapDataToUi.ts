@@ -1,7 +1,5 @@
 import {
   CellColorOption,
-  TransparentColorType,
-  AllCellColors,
   transparentColor,
   getRandomColor,
 } from "./cellColors";
@@ -15,30 +13,9 @@ import {
   isCellLinked,
 } from "./grid";
 import { strHasLength } from "../utils/typeGuard";
-export enum UiCellType {
-  Space,
-  Link,
-  Fixed,
-}
+import { UiCell, UiCellType, UiGrid } from "./uiGrid";
 
-export type UiCell =
-  | {
-      readonly type: UiCellType.Space;
-      readonly dataCellId: string;
-      readonly color: TransparentColorType;
-    }
-  | {
-      readonly type: UiCellType.Link;
-      readonly dataCellId: string;
-      readonly direction: UiDirections;
-      color: AllCellColors;
-    }
-  | {
-      readonly type: UiCellType.Fixed;
-      color: CellColorOption;
-    };
-
-const insertDataCellToUiGrid = (uiGrid: UiCell[][], cell: DataCell) => {
+const insertDataCellToUiGrid = (uiGrid: UiGrid, cell: DataCell) => {
   const { rowIndex, columnIndex } = cell;
   const cellId = getIdFromCell(cell);
   if (strHasLength(cellId)) {
@@ -62,7 +39,7 @@ const insertDataCellToUiGrid = (uiGrid: UiCell[][], cell: DataCell) => {
       type: UiCellType.Link,
       dataCellId: cellId,
       direction: UiDirections.right,
-      color: CellColorOption.Skyblue,
+      color: CellColorOption.Blue,
     };
     if (uiRowIndex > 0) {
       uiGrid[uiRowIndex - 1][uiColumnIndex] = {
@@ -75,18 +52,18 @@ const insertDataCellToUiGrid = (uiGrid: UiCell[][], cell: DataCell) => {
         type: UiCellType.Link,
         dataCellId: cellId,
         direction: UiDirections.up,
-        color: CellColorOption.Skyblue,
+        color: CellColorOption.Blue,
       };
       uiGrid[uiRowIndex - 1][uiColumnIndex + 2] = {
         type: UiCellType.Fixed,
-        color: CellColorOption.Skyblue,
+        color: CellColorOption.Blue,
       };
     }
   }
 };
-export const mapDataToUI = (grid: DataGrid): UiCell[][] => {
+export const mapDataToUI = (grid: DataGrid): UiGrid => {
   const { width: columnCount, height: rowCount } = grid;
-  let result: UiCell[][] = [];
+  let result: UiGrid = [];
   for (let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
     result[rowIndex * 2] = [];
     if (rowIndex < rowCount - 1) {
