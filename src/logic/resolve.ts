@@ -66,12 +66,12 @@ export const shortestPath = (
 
 export const shortestPathFromIndex = (
   grid: DataGrid,
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number
+  rowIndex1: number,
+  columnIndex1: number,
+  rowIndex2: number,
+  columnIndex2: number
 ) => {
-  const p1 = getIdFromIndex(x1, y1);
-  const p2 = getIdFromIndex(x2, y2);
+  const p1 = getIdFromIndex(rowIndex1, columnIndex1);
+  const p2 = getIdFromIndex(rowIndex2, columnIndex2);
   return shortestPath(grid, p1, p2);
 };

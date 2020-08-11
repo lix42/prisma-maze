@@ -11,8 +11,13 @@ import { UiGrid } from "../../logic/uiGrid";
 interface ContainerProps {
   readonly grid: UiGrid;
   readonly dispatch: Dispatch<DataGridHandledActions>;
+  readonly shortestLength: number;
 }
-export const Container: React.FC<ContainerProps> = ({ grid, dispatch }) => {
+export const Container: React.FC<ContainerProps> = ({
+  grid,
+  dispatch,
+  shortestLength,
+}) => {
   const [offsite, setOffsite] = useState(0);
   const dataGridHeight = Math.ceil(grid.length / 2);
   const uiGridWidth = grid[0].length;
@@ -64,6 +69,7 @@ export const Container: React.FC<ContainerProps> = ({ grid, dispatch }) => {
       </div>
       <div className={cx(controlBar)}>
         <button onClick={refreshMaze}>RefreshMaze Maze</button>
+        Shortest Length: {shortestLength}
         <button onClick={scrollLeft}>Scroll Left</button>
         <button
           onClick={() => {

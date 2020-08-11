@@ -4,11 +4,17 @@ import { Container } from "./components/Container/component";
 import { createDataGridConstructMazeAction } from "./reducer/dataGrid";
 
 function App() {
-  const { uiGrid, dispatch } = useGrid(3, 4);
+  const { uiGrid, dispatch, shortestLength } = useGrid(3, 4);
   useEffect(() => dispatch(createDataGridConstructMazeAction(0, 0, 2, 0)), [
     dispatch,
   ]);
-  return <Container grid={uiGrid} dispatch={dispatch} />;
+  return (
+    <Container
+      grid={uiGrid}
+      dispatch={dispatch}
+      shortestLength={shortestLength}
+    />
+  );
 }
 
 export default App;
