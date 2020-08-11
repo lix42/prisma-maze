@@ -1,8 +1,4 @@
-import {
-  TransparentColorType,
-  CellColorOption,
-  AllCellColors,
-} from "./cellColors";
+import { CellColorOption, AllCellColors } from "./cellColors";
 import { UiDirections } from "../utils/directions";
 
 export enum UiCellType {

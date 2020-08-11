@@ -18,7 +18,12 @@ const useGrid = (rowCount: number, columnCount: number) => {
     { rowCount, columnCount },
     initGrid
   );
-  const uiGrid = mapDataToUI(dataGrid);
+  const uiGrid = mapDataToUI(dataGrid, {
+    e1RowIndex: 0,
+    e1ColumnIndex: 0,
+    e2RowIndex: rowCount - 1,
+    e2ColumnIndex: 0,
+  });
   colorMazeWall(uiGrid);
   return { uiGrid, dispatch };
 };

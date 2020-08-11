@@ -1,7 +1,6 @@
 import {
   UiGrid,
   UiCellType,
-  searchUiGrid,
   PositionedUiCell,
   traverseUiGrid,
   getCellNeighbors,

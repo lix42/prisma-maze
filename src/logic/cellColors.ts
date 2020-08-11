@@ -29,6 +29,10 @@ const transparent = css`
   --cell-color: transparent;
 `;
 
+const ends = css`
+  --cell-color: black;
+`;
+
 export enum CellColorOption {
   Unset = "unset",
   Red = "red",
@@ -41,9 +45,17 @@ export enum CellColorOption {
 
 export type TransparentColorType = "transparent";
 export const transparentColor: TransparentColorType = "transparent";
-export type AllCellColors = CellColorOption | TransparentColorType;
+
+export type EndsColorType = "ends";
+
+export const endsColor: EndsColorType = "ends";
+export type AllCellColors =
+  | CellColorOption
+  | TransparentColorType
+  | EndsColorType;
 export const CellColors = Object.freeze({
   [transparentColor]: transparent,
+  [endsColor]: ends,
   [CellColorOption.Unset]: transparent,
   [CellColorOption.Red]: red,
   [CellColorOption.Green]: green,
@@ -99,7 +111,7 @@ export const pickRandomUniqueColor = <S extends AllCellColors>(
 };
 
 export const decompositionColor = (color: AllCellColors): Set<PrimaryColor> => {
-  if (color === transparentColor) {
+  if (color === transparentColor || color === endsColor) {
     return new Set([getRandomPrimaryColor()]);
   }
   return new Set(DECOMPOSITION_MAP[color]);

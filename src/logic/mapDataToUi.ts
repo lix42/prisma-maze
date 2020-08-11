@@ -1,4 +1,4 @@
-import { CellColorOption, transparentColor } from "./cellColors";
+import { CellColorOption, transparentColor, endsColor } from "./cellColors";
 import { Directions, UiDirections } from "../utils/directions";
 import {
   DataGrid,
@@ -57,7 +57,15 @@ const insertDataCellToUiGrid = (uiGrid: UiGrid, cell: DataCell) => {
     }
   }
 };
-export const mapDataToUI = (grid: DataGrid): UiGrid => {
+export const mapDataToUI = (
+  grid: DataGrid,
+  ends?: {
+    e1RowIndex: number;
+    e1ColumnIndex: number;
+    e2RowIndex: number;
+    e2ColumnIndex: number;
+  }
+): UiGrid => {
   const { width: columnCount, height: rowCount } = grid;
   let result: UiGrid = [];
   for (let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
@@ -83,6 +91,11 @@ export const mapDataToUI = (grid: DataGrid): UiGrid => {
       }
     })
   );
+  if (ends != null) {
+    const { e1RowIndex, e1ColumnIndex, e2RowIndex, e2ColumnIndex } = ends;
+    result[e1RowIndex * 2][e1ColumnIndex * 3].color = endsColor;
+    result[e2RowIndex * 2][e2ColumnIndex * 3].color = endsColor;
+  }
   return result;
 };
 
