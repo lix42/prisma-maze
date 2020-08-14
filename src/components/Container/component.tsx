@@ -22,6 +22,7 @@ export const Container: React.FC<ContainerProps> = ({
   shortestLength,
 }) => {
   const [offset, setOffset] = useState(0);
+  const [reverse, setReverse] = useState<boolean>(false);
   const dataGridHeight = Math.ceil(grid.length / 2);
   const uiGridWidth = grid[0].length;
   const height = grid.length * 51;
@@ -75,6 +76,13 @@ export const Container: React.FC<ContainerProps> = ({
           Reset Position
         </button>
         <button onClick={scrollRight}>Scroll Right</button>
+        <button
+          onClick={() => {
+            setReverse(!reverse);
+          }}
+        >
+          Reverse Path
+        </button>
       </div>
       <Grid
         grid={gridWithPath}
@@ -82,6 +90,7 @@ export const Container: React.FC<ContainerProps> = ({
         height={height}
         uiGridWidth={uiGridWidth}
         offset={offset}
+        reverse={reverse}
       />
     </>
   );

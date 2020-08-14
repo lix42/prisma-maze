@@ -9,6 +9,7 @@ interface GridProps {
   readonly uiGridWidth: number;
   readonly width: number;
   readonly height: number;
+  readonly reverse?: boolean;
 }
 
 export const Grid: React.FC<GridProps> = ({
@@ -17,13 +18,18 @@ export const Grid: React.FC<GridProps> = ({
   width,
   height,
   offset,
+  reverse,
 }) => (
   <div className={cx(canvas)} style={{ width, height }}>
     {grid.flatMap((columns, rowIndex) =>
       columns.map((_, columnIndex) => {
         let cellIndex = columnIndex + offset;
-        if (cellIndex >= uiGridWidth) {
-          cellIndex -= uiGridWidth;
+        if (reverse === true) {
+          cellIndex = uiGridWidth - cellIndex;
+        }
+        cellIndex = cellIndex % uiGridWidth;
+        if (cellIndex < 0) {
+          cellIndex += uiGridWidth;
         }
         const cell = columns[cellIndex];
         return (
