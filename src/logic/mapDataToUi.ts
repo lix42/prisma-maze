@@ -6,10 +6,12 @@ import {
   getIdFromCell,
   getCellByIndex,
   getCellById,
-  isCellLinked,
+  isDataCellLinked,
 } from "./grid";
 import { strHasLength } from "../utils/typeGuard";
 import { UiCell, UiCellType, UiGrid } from "./uiGrid";
+import { DataGridPath } from "./resolve";
+import { indexToKey } from "../utils/key";
 
 const insertDataCellToUiGrid = (uiGrid: UiGrid, cell: DataCell) => {
   const { rowIndex, columnIndex } = cell;
@@ -114,19 +116,88 @@ export const isCellFilled = (cell: UiCell, grid: DataGrid): boolean => {
       }
       switch (direction) {
         case UiDirections.right:
-          return !isCellLinked(dataCell, Directions.right);
+          return !isDataCellLinked(dataCell, Directions.right);
         case UiDirections.up:
-          return !isCellLinked(dataCell, Directions.up);
+          return !isDataCellLinked(dataCell, Directions.up);
         case UiDirections.rightAndDown:
           return !(
-            isCellLinked(dataCell, Directions.right) ||
-            isCellLinked(dataCell, Directions.down)
+            isDataCellLinked(dataCell, Directions.right) ||
+            isDataCellLinked(dataCell, Directions.down)
           );
         case UiDirections.rightAndUp:
           return !(
-            isCellLinked(dataCell, Directions.right) ||
-            isCellLinked(dataCell, Directions.up)
+            isDataCellLinked(dataCell, Directions.right) ||
+            isDataCellLinked(dataCell, Directions.up)
           );
       }
   }
+};
+
+export const mapPathToUiIndex = (dataGrid: DataGrid, path: DataGridPath) => {
+  const result = new Set<string>();
+  const uiWidth = dataGrid.width * 3;
+  for (let index = 0; index < path.length; index++) {
+    const dataId = path[index];
+    const dataCell = getCellById(dataGrid, dataId);
+    if (dataCell == null) {
+      continue;
+    }
+    const uiRowIndex = dataCell.rowIndex * 2;
+    const uiColumnIndex = dataCell.columnIndex * 3;
+    result.add(indexToKey(uiRowIndex, uiColumnIndex, uiWidth));
+    if (index < path.length - 1) {
+      const next = path[index + 1];
+      const found = Object.entries(dataCell.links).find(
+        ([_, id]) => id === next
+      );
+      if (found != null) {
+        const direction = found[0];
+        switch (direction) {
+          case Directions.right:
+            result.add(indexToKey(uiRowIndex, uiColumnIndex + 1, uiWidth));
+            result.add(indexToKey(uiRowIndex, uiColumnIndex + 2, uiWidth));
+            break;
+          case Directions.left:
+            result.add(indexToKey(uiRowIndex, uiColumnIndex - 1, uiWidth));
+            result.add(indexToKey(uiRowIndex, uiColumnIndex - 2, uiWidth));
+            break;
+          case Directions.up:
+            if (dataCell.columnIndex % 2 === 0) {
+              result.add(indexToKey(uiRowIndex - 1, uiColumnIndex, uiWidth));
+              result.add(
+                indexToKey(uiRowIndex - 1, uiColumnIndex + 1, uiWidth)
+              );
+              result.add(
+                indexToKey(uiRowIndex - 2, uiColumnIndex + 1, uiWidth)
+              );
+            } else {
+              result.add(indexToKey(uiRowIndex, uiColumnIndex + 1, uiWidth));
+              result.add(
+                indexToKey(uiRowIndex - 1, uiColumnIndex + 1, uiWidth)
+              );
+              result.add(indexToKey(uiRowIndex - 1, uiColumnIndex, uiWidth));
+            }
+            break;
+          case Directions.down:
+            if (dataCell.columnIndex % 2 === 0) {
+              result.add(indexToKey(uiRowIndex, uiColumnIndex + 1, uiWidth));
+              result.add(
+                indexToKey(uiRowIndex + 1, uiColumnIndex + 1, uiWidth)
+              );
+              result.add(indexToKey(uiRowIndex + 1, uiColumnIndex, uiWidth));
+            } else {
+              result.add(indexToKey(uiRowIndex + 1, uiColumnIndex, uiWidth));
+              result.add(
+                indexToKey(uiRowIndex + 1, uiColumnIndex + 1, uiWidth)
+              );
+              result.add(
+                indexToKey(uiRowIndex + 2, uiColumnIndex + 1, uiWidth)
+              );
+            }
+            break;
+        }
+      }
+    }
+  }
+  return result;
 };

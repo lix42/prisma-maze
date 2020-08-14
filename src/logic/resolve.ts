@@ -1,16 +1,17 @@
 import { DataGrid, getCellLinkedNeighbors, getIdFromIndex } from "./grid";
 import { arrHasLength, strHasLength } from "../utils/typeGuard";
 
-type Path = string[];
+export type DataGridPath = string[];
 
-const reversePath = (path: Path) => (arrHasLength(path) ? path.reverse() : []);
+const reversePath = (path: DataGridPath) =>
+  arrHasLength(path) ? path.reverse() : [];
 
 const expandPath = (
   grid: DataGrid,
   queue: string[],
-  visited: Map<string, Path>,
-  targets: Map<string, Path>
-): Path | null => {
+  visited: Map<string, DataGridPath>,
+  targets: Map<string, DataGridPath>
+): DataGridPath | null => {
   if (!arrHasLength(queue)) {
     return null;
   }
@@ -27,7 +28,7 @@ const expandPath = (
     return null;
   }
   const nextCellIds = getCellLinkedNeighbors(grid, current);
-  let find: Path | null = null;
+  let find: DataGridPath | null = null;
   nextCellIds.some((cellId) => {
     if (targets.has(cellId)) {
       const targetPath = targets.get(cellId);
@@ -49,12 +50,12 @@ export const shortestPath = (
   grid: DataGrid,
   p1: string,
   p2: string
-): Path | null => {
-  let q1: Path = [p1];
-  let v1 = new Map<string, Path>([[p1, [p1]]]);
-  let q2: Path = [p2];
-  let v2 = new Map<string, Path>([[p2, [p2]]]);
-  let result: Path | null = null;
+): DataGridPath | null => {
+  let q1: DataGridPath = [p1];
+  let v1 = new Map<string, DataGridPath>([[p1, [p1]]]);
+  let q2: DataGridPath = [p2];
+  let v2 = new Map<string, DataGridPath>([[p2, [p2]]]);
+  let result: DataGridPath | null = null;
   while (arrHasLength(q1) && arrHasLength(q2) && !arrHasLength(result)) {
     result = expandPath(grid, q1, v1, v2) ?? expandPath(grid, q2, v2, v1);
   }

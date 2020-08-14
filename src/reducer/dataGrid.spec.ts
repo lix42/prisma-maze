@@ -2,7 +2,7 @@ import {
   createDataGrid,
   getIdFromIndex,
   getCellByIndex,
-  isCellLinked,
+  isDataCellLinked,
 } from "../logic/grid";
 import {
   dataGridReducer,
@@ -27,7 +27,7 @@ describe("datagrid reducer", () => {
       if (newCell == null) {
         expect(newCell).toBeTruthy();
       } else {
-        expect(isCellLinked(newCell, Directions.right)).toBe(true);
+        expect(isDataCellLinked(newCell, Directions.right)).toBe(true);
       }
     });
   });
@@ -42,7 +42,7 @@ describe("datagrid reducer", () => {
       if (connectedCell == null) {
         expect(connectedCell).toBeTruthy();
       } else {
-        expect(isCellLinked(connectedCell, Directions.right)).toBe(true);
+        expect(isDataCellLinked(connectedCell, Directions.right)).toBe(true);
       }
       const disconnectedGrid = dataGridReducer(
         connectedGrid,
@@ -52,7 +52,9 @@ describe("datagrid reducer", () => {
       if (disconnectedCell == null) {
         expect(disconnectedCell).toBeTruthy();
       } else {
-        expect(isCellLinked(disconnectedCell, Directions.right)).toBe(false);
+        expect(isDataCellLinked(disconnectedCell, Directions.right)).toBe(
+          false
+        );
       }
     });
   });
@@ -67,7 +69,7 @@ describe("datagrid reducer", () => {
       if (connectedCell == null) {
         expect(connectedCell).toBeTruthy();
       } else {
-        expect(isCellLinked(connectedCell, Directions.right)).toBe(true);
+        expect(isDataCellLinked(connectedCell, Directions.right)).toBe(true);
       }
       const disconnectedGrid = dataGridReducer(
         connectedGrid,
@@ -77,7 +79,9 @@ describe("datagrid reducer", () => {
       if (disconnectedCell == null) {
         expect(disconnectedCell).toBeTruthy();
       } else {
-        expect(isCellLinked(disconnectedCell, Directions.right)).toBe(false);
+        expect(isDataCellLinked(disconnectedCell, Directions.right)).toBe(
+          false
+        );
       }
     });
   });
@@ -100,8 +104,10 @@ describe("datagrid reducer", () => {
       if (disconnectedCell == null) {
         expect(disconnectedCell).toBeTruthy();
       } else {
-        expect(isCellLinked(disconnectedCell, Directions.right)).toBe(false);
-        expect(isCellLinked(disconnectedCell, Directions.down)).toBe(false);
+        expect(isDataCellLinked(disconnectedCell, Directions.right)).toBe(
+          false
+        );
+        expect(isDataCellLinked(disconnectedCell, Directions.down)).toBe(false);
       }
     });
   });
@@ -124,8 +130,10 @@ describe("datagrid reducer", () => {
       if (disconnectedCell == null) {
         expect(disconnectedCell).toBeTruthy();
       } else {
-        expect(isCellLinked(disconnectedCell, Directions.right)).toBe(false);
-        expect(isCellLinked(disconnectedCell, Directions.down)).toBe(false);
+        expect(isDataCellLinked(disconnectedCell, Directions.right)).toBe(
+          false
+        );
+        expect(isDataCellLinked(disconnectedCell, Directions.down)).toBe(false);
       }
     });
   });

@@ -26,8 +26,10 @@ export const setCellLink = (
   },
 });
 
-export const isCellLinked = (cell: DataCell, direction: Directions): boolean =>
-  cell?.links?.[direction] != null;
+export const isDataCellLinked = (
+  cell: DataCell,
+  direction: Directions
+): boolean => cell?.links?.[direction] != null;
 
 export type DataGrid = {
   readonly width: number;

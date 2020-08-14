@@ -4,7 +4,7 @@ import {
   connectCell,
   getCellById,
   disconnectCell,
-  isCellLinked,
+  isDataCellLinked,
   createDataGrid,
   getIdFromIndex,
 } from "../logic/grid";
@@ -140,7 +140,7 @@ const toggleConnection = (
   if (cell == null) {
     return grid;
   }
-  if (isCellLinked(cell, direction)) {
+  if (isDataCellLinked(cell, direction)) {
     return handleDisconnect(
       grid,
       createDataGridDisconnectAction(cellId, direction)
@@ -196,7 +196,6 @@ export const dataGridReducer: Reducer<DataGrid, DataGridHandledActions> = (
   state,
   action
 ) => {
-  console.log(JSON.stringify(action, null, 4));
   switch (action.type) {
     case DataGridActionType.connect:
       return handleConnect(state, action);

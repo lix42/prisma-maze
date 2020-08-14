@@ -12,7 +12,9 @@ import {
   pickRandomUniqueColor,
   getRandomPrimaryColor,
   compositeColor,
+  transparentColor,
 } from "./cellColors";
+import { indexToKey } from "../utils/key";
 
 const isWall = (cell: PositionedUiCell) => cell.cell.type !== UiCellType.Space;
 
@@ -48,25 +50,19 @@ const getCellColorFormThreeNeighbor = (
 };
 
 const getCellColor = (neighbors: PositionedUiCell[]) => {
-  const coloredNeighbors = neighbors.filter(
-    (n) => isWall(n) && n.cell.color !== CellColorOption.Unset
-  );
-  if (coloredNeighbors.length === 0) {
+  if (neighbors.length === 0) {
     return getRandomColor();
   }
-  if (coloredNeighbors.length === 1) {
-    return getCellColorFormOneNeighbor(coloredNeighbors[0]);
+  if (neighbors.length === 1) {
+    return getCellColorFormOneNeighbor(neighbors[0]);
   }
-  if (coloredNeighbors.length === 2) {
-    return getCellColorFormTwoNeighbor(
-      coloredNeighbors[0],
-      coloredNeighbors[1]
-    );
+  if (neighbors.length === 2) {
+    return getCellColorFormTwoNeighbor(neighbors[0], neighbors[1]);
   }
   return getCellColorFormThreeNeighbor(
-    coloredNeighbors[0],
-    coloredNeighbors[1],
-    coloredNeighbors[2]
+    neighbors[0],
+    neighbors[1],
+    neighbors[2]
   );
 };
 
@@ -77,7 +73,31 @@ export const colorMazeWall = (uiGrid: UiGrid) => {
         uiGrid,
         cell.rowIndex,
         cell.columnIndex
-      );
+      ).filter((n) => isWall(n) && n.cell.color !== CellColorOption.Unset);
+      uiGrid[cell.rowIndex][cell.columnIndex].color = getCellColor(neighbors);
+    }
+  });
+};
+
+export const colorMazePath = (
+  uiGrid: UiGrid,
+  cellOnPath: Set<string> | null = null
+) => {
+  if (uiGrid == null) {
+    return uiGrid;
+  }
+  const uiWidth = uiGrid[0].length;
+  traverseUiGrid(uiGrid, 0, 0, (cell: PositionedUiCell) => {
+    if (
+      cell.cell.type === UiCellType.Space &&
+      (cellOnPath == null ||
+        cellOnPath.has(indexToKey(cell.rowIndex, cell.columnIndex, uiWidth)))
+    ) {
+      const neighbors = getCellNeighbors(
+        uiGrid,
+        cell.rowIndex,
+        cell.columnIndex
+      ).filter((n) => !isWall(n) && n.cell.color !== transparentColor);
       uiGrid[cell.rowIndex][cell.columnIndex].color = getCellColor(neighbors);
     }
   });
