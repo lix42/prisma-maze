@@ -4,6 +4,7 @@ import { controlBar } from "./style";
 import {
   DataGridHandledActions,
   createDataGridConstructMazeAction,
+  createDataGridNoopAction,
 } from "../../reducer/dataGrid";
 import { UiGrid } from "../../logic/uiGrid";
 import { Grid } from "../Grid/grid";
@@ -32,6 +33,10 @@ export const Container: React.FC<ContainerProps> = ({
     [dispatch, dataGridHeight]
   );
 
+  const refreshColor = useCallback(() => dispatch(createDataGridNoopAction()), [
+    dispatch,
+  ]);
+
   const scrollLeft = useCallback(() => {
     let newOffset = offset + 2;
     if (newOffset >= uiGridWidth) {
@@ -58,7 +63,8 @@ export const Container: React.FC<ContainerProps> = ({
         offset={offset}
       />
       <div className={cx(controlBar)}>
-        <button onClick={refreshMaze}>RefreshMaze Maze</button>
+        <button onClick={refreshMaze}>Refresh Maze</button>
+        <button onClick={refreshColor}>Refresh Color</button>
         Shortest Length: {shortestLength}
         <button onClick={scrollLeft}>Scroll Left</button>
         <button

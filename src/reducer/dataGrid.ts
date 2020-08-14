@@ -18,6 +18,7 @@ enum DataGridActionType {
   clear = "@@datagrid/clear",
   reset = "@@datagrid/reset",
   constructMaze = "@@datagrid/construct-maze",
+  noop = "@@datagrid/noop",
 }
 
 interface DataGridConnectAction {
@@ -105,13 +106,22 @@ export const createDataGridConstructMazeAction = (
   endColumnIndex,
 });
 
+interface DataGridNoopAction {
+  readonly type: DataGridActionType.noop;
+}
+
+export const createDataGridNoopAction = (): DataGridNoopAction => ({
+  type: DataGridActionType.noop,
+});
+
 export type DataGridHandledActions =
   | DataGridConnectAction
   | DataGridDisconnectAction
   | DataGridToggleConnectAction
   | DataGridClearAction
   | DataGridResetAction
-  | DataGridConstructMazeAction;
+  | DataGridConstructMazeAction
+  | DataGridNoopAction;
 
 const handleConnect = (grid: DataGrid, action: DataGridConnectAction) => {
   const { cellId, direction } = action;
@@ -209,5 +219,7 @@ export const dataGridReducer: Reducer<DataGrid, DataGridHandledActions> = (
       return resetGrid(state, action);
     case DataGridActionType.constructMaze:
       return constructMaze(state, action);
+    case DataGridActionType.noop:
+      return { ...state };
   }
 };
