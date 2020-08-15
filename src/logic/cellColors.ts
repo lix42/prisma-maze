@@ -107,11 +107,11 @@ export const pickRandomUniqueColor = <S extends AllCellColors>(
     return null;
   }
   const listLength = list.length;
-  return list[Math.random() * listLength] ?? null;
+  return list[Math.floor(Math.random() * listLength)] ?? null;
 };
 
 export const decompositionColor = (color: AllCellColors): Set<PrimaryColor> => {
-  if (color === transparentColor || color === endsColor) {
+  if (!isColor(color)) {
     return new Set([getRandomPrimaryColor()]);
   }
   return new Set(DECOMPOSITION_MAP[color]);
@@ -132,4 +132,22 @@ export const compositeColor = (
     return CellColorOption.Yellow;
   }
   return CellColorOption.Cyan;
+};
+
+export const isColor = (color: AllCellColors): color is CellColorOption =>
+  !(
+    color === transparentColor ||
+    color === endsColor ||
+    color === CellColorOption.Unset
+  );
+export const areColorsRelated = (
+  c1: AllCellColors,
+  c2: AllCellColors
+): boolean => {
+  if (!isColor(c1) || !isColor(c2)) {
+    return false;
+  }
+  const s1 = decompositionColor(c1);
+  const s2 = decompositionColor(c2);
+  return Array.from(s1.values()).some((c) => s2.has(c));
 };

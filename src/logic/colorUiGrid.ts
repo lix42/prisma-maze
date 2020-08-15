@@ -13,16 +13,26 @@ import {
   getRandomPrimaryColor,
   compositeColor,
   transparentColor,
+  areColorsRelated,
+  isColor,
 } from "./cellColors";
 import { indexToKey } from "../utils/key";
 
 const isWall = (cell: PositionedUiCell) => cell.cell.type !== UiCellType.Space;
 
+const checking = (condition: boolean) => {
+  if (!condition) {
+    debugger;
+  }
+};
+
 const getCellColorFormOneNeighbor = (neighbor: PositionedUiCell) => {
   const primeColor =
     pickRandomUniqueColor(decompositionColor(neighbor.cell.color)) ??
     getRandomPrimaryColor();
-  return compositeColor(primeColor, getRandomPrimaryColor());
+  const result = compositeColor(primeColor, getRandomPrimaryColor());
+  checking(areColorsRelated(result, neighbor.cell.color));
+  return result;
 };
 
 const getCellColorFormTwoNeighbor = (
@@ -35,7 +45,10 @@ const getCellColorFormTwoNeighbor = (
   const primeColor2 =
     pickRandomUniqueColor(decompositionColor(neighbor2.cell.color)) ??
     getRandomPrimaryColor();
-  return compositeColor(primeColor1, primeColor2);
+  const result = compositeColor(primeColor1, primeColor2);
+  checking(areColorsRelated(result, neighbor1.cell.color));
+  checking(areColorsRelated(result, neighbor2.cell.color));
+  return result;
 };
 
 const getCellColorFormThreeNeighbor = (
@@ -73,7 +86,7 @@ export const colorMazeWall = (uiGrid: UiGrid) => {
         uiGrid,
         cell.rowIndex,
         cell.columnIndex
-      ).filter((n) => isWall(n) && n.cell.color !== CellColorOption.Unset);
+      ).filter((n) => isWall(n) && isColor(n.cell.color));
       uiGrid[cell.rowIndex][cell.columnIndex].color = getCellColor(neighbors);
     }
   });
@@ -97,7 +110,7 @@ export const colorMazePath = (
         uiGrid,
         cell.rowIndex,
         cell.columnIndex
-      ).filter((n) => !isWall(n) && n.cell.color !== transparentColor);
+      ).filter((n) => !isWall(n) && isColor(n.cell.color));
       uiGrid[cell.rowIndex][cell.columnIndex].color = getCellColor(neighbors);
     }
   });
