@@ -6,13 +6,11 @@ import {
   getCellNeighbors,
 } from "./uiGrid";
 import {
-  CellColorOption,
   getRandomColor,
   decompositionColor,
   pickRandomUniqueColor,
   getRandomPrimaryColor,
   compositeColor,
-  transparentColor,
   areColorsRelated,
   isColor,
 } from "./cellColors";
