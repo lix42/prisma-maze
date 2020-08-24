@@ -2,27 +2,27 @@ import { css } from "emotion";
 import { arrHasLength } from "../utils/typeGuard";
 
 const red = css`
-  --cell-color: rgb(240, 80, 80);
-`;
-
-const green = css`
-  --cell-color: rgb(80, 240, 80);
-`;
-
-const blue = css`
-  --cell-color: rgb(80, 80, 240);
+  --cell-color: red;
 `;
 
 const yellow = css`
-  --cell-color: rgb(220, 220, 10);
+  --cell-color: yellow;
 `;
 
-const magenta = css`
-  --cell-color: rgb(220, 10, 220);
+const blue = css`
+  --cell-color: blue;
 `;
 
-const cyan = css`
-  --cell-color: rgb(10, 220, 220);
+const orange = css`
+  --cell-color: orange;
+`;
+
+const purple = css`
+  --cell-color: purple;
+`;
+
+const green = css`
+  --cell-color: green;
 `;
 
 const transparent = css`
@@ -36,11 +36,11 @@ const ends = css`
 export enum CellColorOption {
   Unset = "unset",
   Red = "red",
-  Green = "green",
-  Blue = "blue",
   Yellow = "yellow",
-  Magenta = "magenta",
-  Cyan = "cyan",
+  Blue = "blue",
+  Orange = "orange",
+  Purple = "purple",
+  Green = "green",
 }
 
 export type TransparentColorType = "transparent";
@@ -58,11 +58,11 @@ export const CellColors = Object.freeze({
   [endsColor]: ends,
   [CellColorOption.Unset]: transparent,
   [CellColorOption.Red]: red,
-  [CellColorOption.Green]: green,
-  [CellColorOption.Blue]: blue,
   [CellColorOption.Yellow]: yellow,
-  [CellColorOption.Magenta]: magenta,
-  [CellColorOption.Cyan]: cyan,
+  [CellColorOption.Blue]: blue,
+  [CellColorOption.Orange]: orange,
+  [CellColorOption.Purple]: purple,
+  [CellColorOption.Green]: green,
 });
 
 const allCellColors = Object.values(CellColorOption).filter(
@@ -77,14 +77,14 @@ export const getRandomColor = (): CellColorOption => {
 
 type PrimaryColor =
   | CellColorOption.Red
-  | CellColorOption.Green
+  | CellColorOption.Yellow
   | CellColorOption.Blue;
 
 export const getRandomPrimaryColor = (): PrimaryColor => {
   const i = Math.floor(Math.random() * 3);
   return ([
     CellColorOption.Red,
-    CellColorOption.Green,
+    CellColorOption.Yellow,
     CellColorOption.Blue,
   ] as PrimaryColor[])[i];
 };
@@ -92,11 +92,11 @@ export const getRandomPrimaryColor = (): PrimaryColor => {
 const DECOMPOSITION_MAP: { [key in CellColorOption]: PrimaryColor[] } = {
   [CellColorOption.Unset]: [],
   [CellColorOption.Red]: [CellColorOption.Red],
-  [CellColorOption.Green]: [CellColorOption.Green],
+  [CellColorOption.Yellow]: [CellColorOption.Yellow],
   [CellColorOption.Blue]: [CellColorOption.Blue],
-  [CellColorOption.Yellow]: [CellColorOption.Red, CellColorOption.Green],
-  [CellColorOption.Magenta]: [CellColorOption.Red, CellColorOption.Blue],
-  [CellColorOption.Cyan]: [CellColorOption.Green, CellColorOption.Blue],
+  [CellColorOption.Orange]: [CellColorOption.Red, CellColorOption.Yellow],
+  [CellColorOption.Purple]: [CellColorOption.Red, CellColorOption.Blue],
+  [CellColorOption.Green]: [CellColorOption.Yellow, CellColorOption.Blue],
 };
 
 export const pickRandomUniqueColor = <S extends AllCellColors>(
@@ -127,11 +127,11 @@ export const compositeColor = (
   const colorSet = new Set([c1, c2]);
   if (colorSet.has(CellColorOption.Red)) {
     if (colorSet.has(CellColorOption.Blue)) {
-      return CellColorOption.Magenta;
+      return CellColorOption.Purple;
     }
-    return CellColorOption.Yellow;
+    return CellColorOption.Orange;
   }
-  return CellColorOption.Cyan;
+  return CellColorOption.Green;
 };
 
 export const isColor = (color: AllCellColors): color is CellColorOption =>

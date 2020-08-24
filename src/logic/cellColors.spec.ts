@@ -4,6 +4,7 @@ import {
   CellColorOption,
   decompositionColor,
   compositeColor,
+  areColorsRelated,
 } from "./cellColors";
 
 describe("getRandomColor", () => {
@@ -15,11 +16,11 @@ describe("getRandomColor", () => {
 describe("decompositionColor", () => {
   const DECOMPOSITION_MAP: [CellColorOption, CellColorOption[]][] = [
     [CellColorOption.Red, [CellColorOption.Red]],
-    [CellColorOption.Green, [CellColorOption.Green]],
+    [CellColorOption.Yellow, [CellColorOption.Yellow]],
     [CellColorOption.Blue, [CellColorOption.Blue]],
-    [CellColorOption.Yellow, [CellColorOption.Red, CellColorOption.Green]],
-    [CellColorOption.Magenta, [CellColorOption.Red, CellColorOption.Blue]],
-    [CellColorOption.Cyan, [CellColorOption.Green, CellColorOption.Blue]],
+    [CellColorOption.Orange, [CellColorOption.Red, CellColorOption.Yellow]],
+    [CellColorOption.Purple, [CellColorOption.Red, CellColorOption.Blue]],
+    [CellColorOption.Green, [CellColorOption.Yellow, CellColorOption.Blue]],
   ];
   DECOMPOSITION_MAP.forEach(([input, result]) => {
     it(`should decomposition ${input}`, () => {
@@ -39,23 +40,31 @@ describe("compositeColor", () => {
   });
 
   it("should composite colors", () => {
-    expect(compositeColor(CellColorOption.Red, CellColorOption.Green)).toBe(
-      CellColorOption.Yellow
+    expect(compositeColor(CellColorOption.Red, CellColorOption.Yellow)).toBe(
+      CellColorOption.Orange
     );
-    expect(compositeColor(CellColorOption.Green, CellColorOption.Red)).toBe(
-      CellColorOption.Yellow
+    expect(compositeColor(CellColorOption.Yellow, CellColorOption.Red)).toBe(
+      CellColorOption.Orange
     );
     expect(compositeColor(CellColorOption.Red, CellColorOption.Blue)).toBe(
-      CellColorOption.Magenta
+      CellColorOption.Purple
     );
     expect(compositeColor(CellColorOption.Blue, CellColorOption.Red)).toBe(
-      CellColorOption.Magenta
+      CellColorOption.Purple
     );
-    expect(compositeColor(CellColorOption.Green, CellColorOption.Blue)).toBe(
-      CellColorOption.Cyan
+    expect(compositeColor(CellColorOption.Yellow, CellColorOption.Blue)).toBe(
+      CellColorOption.Green
     );
-    expect(compositeColor(CellColorOption.Blue, CellColorOption.Green)).toBe(
-      CellColorOption.Cyan
+    expect(compositeColor(CellColorOption.Blue, CellColorOption.Yellow)).toBe(
+      CellColorOption.Green
+    );
+  });
+});
+
+describe("areColorsRelated", () => {
+  it("should return no for different prime colors", () => {
+    expect(areColorsRelated(CellColorOption.Blue, CellColorOption.Red)).toBe(
+      false
     );
   });
 });
