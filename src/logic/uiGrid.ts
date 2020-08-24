@@ -69,7 +69,8 @@ export const getCellNeighbors = (
       result.push({ cell: rightCell, rowIndex, columnIndex: rightIndex });
     }
   }
-  const anotherRowIndex = columnIndex % 2 === 0 ? rowIndex - 1 : rowIndex + 1;
+  const anotherRowIndex =
+    (columnIndex + rowIndex) % 2 === 0 ? rowIndex - 1 : rowIndex + 1;
   const anotherCell = getUiCell(uiGrid, anotherRowIndex, columnIndex);
   if (anotherCell != null) {
     result.push({ cell: anotherCell, rowIndex: anotherRowIndex, columnIndex });
